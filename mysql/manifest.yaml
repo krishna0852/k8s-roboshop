@@ -1,6 +1,6 @@
 apiVersion: v1 
 kind: Secret 
-metdata: 
+metadata: 
   name: db-credentials
 data:
    MYSQL_USER: c2hpcHBpbmc=
