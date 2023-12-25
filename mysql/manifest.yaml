@@ -1,0 +1,44 @@
+apiVersion: v1 
+kind: Secret 
+metdata: 
+  name: db-credentials
+data:
+   MYSQL_USER: c2hpcHBpbmc=
+   MYSQL_PASSWORD: c2VjcmV0
+
+---
+apiVersion: v1 
+kind: Pod 
+metadata: 
+  name: mysql 
+  labels:
+    module: mysql 
+    tier: db
+spec: 
+  containers:
+    - name : mysql 
+      image: krishnateja/k8-mysql:1.0
+      envFrom:
+        - secretRef:
+           name: db-credentials 
+      resources: 
+        requests: 
+          cpu: "60m"
+          memory: "90Mi"
+        limits: 
+          cpu: "75m"
+          memory: "120Mi"
+---
+
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: sql-service 
+spec:
+  selector:
+      module: mysql 
+      tier: db
+  ports:
+   - protocol: TCP 
+     port: 80
+     targetPort: 3306
